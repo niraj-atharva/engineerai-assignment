@@ -5,6 +5,10 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
+  def index
+    @users = User.all.order(created_at: :desc)
+  end
+
   def follow
     @user = User.find(params[:id])
     if current_user.following?(@user)
