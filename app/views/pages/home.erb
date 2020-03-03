@@ -1,2 +1,18 @@
-<%= User.count %>
-<%= User.all.inspect %>
+<% if @tweets.empty? %>
+    <h3>No Tweets are found. Add Tweet.</h3>
+<% else %>
+    <table class="table table-striped">
+      <thead>
+      <th>Tweets</th>
+      <th>User</th>
+      </thead>
+      <tbody>
+      <% @tweets.each do |tweet| %>
+          <tr>
+            <td><%= tweet.message %></td>
+            <td><%= link_to tweet.user.name, user_path(tweet.user) %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+<% end %>
