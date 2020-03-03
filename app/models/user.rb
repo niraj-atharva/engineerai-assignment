@@ -5,6 +5,13 @@ class User < ApplicationRecord
 
   has_many :tweets
 
+  has_many :user_follows, foreign_key: :user_id, class_name: 'Follow'
+  has_many :follow_follows, foreign_key: :follow_id, class_name: 'Follow'
+
+  # FOLLOW/ FOLLOWING
+  has_many :followers, through: :follow_follows, source: 'follower_user'
+  has_many :following, through: :user_follows, source: 'following_user'
+
   validates :username, uniqueness: { case_sensitive: false } # Optional
 
   def name
@@ -12,6 +19,9 @@ class User < ApplicationRecord
     return self.email if self.email.present?
   end
 
+  def following?(user)
+    following.find_by(id: user.id).present?
+  end
 
   # NOTE: for devise login with username
   attr_writer :login
